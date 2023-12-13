@@ -98,7 +98,7 @@ def process_page(page_url: str):
 
 
 def main():
-    initial_url = query_to_url("rytas")
+    initial_url = query_to_url("vakcinavimas")
     pages_queue.put(initial_url)
     visited_pages.add(initial_url)
     with ThreadPoolExecutor(max_workers=10) as executor:
