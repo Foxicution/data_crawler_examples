@@ -74,7 +74,7 @@ def process_articles_page(articles_page: dict[str, Any]) -> list[tuple[int, int,
 #     )
 
 
-def process_page(page_url: str):
+def _process_page(page_url: str):
     with lock:
         print(page_url)
     # global visited_pages, visited_articles, pages_queue, articles_queue
@@ -98,6 +98,25 @@ def process_page(page_url: str):
 
 
 def main():
+    """
+    Main function for the web crawling application.
+
+    This function starts the crawling process by initializing the queue of pages to be crawled and the set of visited pages. It then creates a `ThreadPoolExecutor` with a maximum of 10 worker threads and enters a loop that repeatedly submits tasks to the executor until all pages have been crawled. Each task involves fetching a URL from the queue, processing it using the `process_page` function, and adding any new URLs discovered to the queue.
+
+    Args:
+        None
+
+    Returns:
+        None
+
+    Raises:
+        None
+
+    Example usage:
+        ```python
+        main()
+
+    """
     initial_url = query_to_url("vakcinavimas")
     pages_queue.put(initial_url)
     visited_pages.add(initial_url)

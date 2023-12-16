@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "paulius_data_crawler"
+name = "example_data_crawler"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Foxicution <foxicution.dev@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

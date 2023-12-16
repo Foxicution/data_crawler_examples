@@ -2,10 +2,9 @@ import json
 from unittest.mock import Mock, patch
 
 import pytest
-from requests import Response
-
 from paulius_data_crawler.definitions import test_dir
 from paulius_data_crawler.main import main, process_articles_page
+from requests import Response
 
 
 @pytest.fixture
