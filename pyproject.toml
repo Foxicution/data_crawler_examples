@@ -1,9 +1,14 @@
 [tool.poetry]
 name = "example_data_crawler"
 version = "0.1.0"
-description = ""
+description = """
+Example Data Crawler is a Python package for teaching web crawling basics at \
+CodeAcademy. It uses Python 3.11 with lxml and requests, focusing on practical\
+ web data extraction techniques for beginners.
+"""
 authors = ["Foxicution <foxicution.dev@gmail.com>"]
 readme = "README.md"
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.11"
