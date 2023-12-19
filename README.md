@@ -33,7 +33,7 @@ cd data_crawler_examples
 poetry install
 ```
 
-Afterwards you can checkout and run some example scripts, e.g.:
+Afterwards you can checkout and run some [example](./examples) scripts, e.g.:
 
 ```sh
 poetry run python examples/lrytas/by_topic.py
@@ -49,7 +49,7 @@ from example_data_crawler import crawl
 print(crawl("lrytas", "df", query="vakcinacija", date_from="2023-01-01", time_limit=10))
 ```
 
-For more examples look in the examples directory.
+For more examples look in the [examples](./examples) directory.
 
 ## Structure
 
