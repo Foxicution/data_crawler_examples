@@ -11,7 +11,8 @@ def _get_raw_data(
     date_from: str | None,
     query: str | None,
     max_retries: int = 5,
-    base_delay: float = 0.5,
+    base_delay: float = 5.0,
+    max_base_delay: float = 120.0,
 ) -> dict | None:
     headers = {
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/116.0",
@@ -47,7 +48,7 @@ def _get_raw_data(
             return response.json()
         except RequestError as e:
             print(f"Attempt {retries + 1} failed: {e}")
-            time.sleep(base_delay * (2**retries))
+            time.sleep(min(base_delay * (2**retries), max_base_delay))
             retries += 1
 
     print(f"Failed to get raw data after {max_retries} retries")
