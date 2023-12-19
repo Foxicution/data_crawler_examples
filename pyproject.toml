@@ -15,6 +15,11 @@ requests = "^2.31.0"
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.3"
 
+
+[tool.poetry.group.dev.dependencies]
+python-lsp-server = "^1.9.0"
+python-lsp-ruff = "^2.0.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
