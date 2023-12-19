@@ -3,10 +3,16 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
 import pandas as pd
-from httpx import get
+from httpx import RequestError, get
 
 
-def _get_raw_data(page: int, date_from: str | None, query: str | None) -> dict | None:
+def _get_raw_data(
+    page: int,
+    date_from: str | None,
+    query: str | None,
+    max_retries: int = 5,
+    base_delay: float = 0.5,
+) -> dict | None:
     headers = {
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/116.0",
         "Accept": "application/json, text/plain, */*",
@@ -29,14 +35,23 @@ def _get_raw_data(page: int, date_from: str | None, query: str | None) -> dict |
         params["dfrom"] = date_from
     if query is not None:
         params["query"] = query
-    try:
-        return get(
-            "https://kolumbus-api.lrytas.lt/api_dev/fe/search/0/",
-            params=params,
-            headers=headers,
-        ).json()
-    except Exception as e:
-        print(f"Failed to get raw data for {page}: {e}")
+    retries = 0
+    while retries < max_retries:
+        try:
+            response = get(
+                "https://kolumbus-api.lrytas.lt/api_dev/fe/search/0/",
+                params=params,
+                headers=headers,
+            )
+            response.raise_for_status()
+            return response.json()
+        except RequestError as e:
+            print(f"Attempt {retries + 1} failed: {e}")
+            time.sleep(base_delay * (2**retries))
+            retries += 1
+
+    print(f"Failed to get raw data after {max_retries} retries")
+    return None
 
 
 def crawl_lrytas(
