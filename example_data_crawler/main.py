@@ -1,4 +1,5 @@
-from typing import Callable
+from io import StringIO
+from typing import Any, Callable, Literal
 
 import pandas as pd
 
@@ -9,7 +10,11 @@ CRAWLERS: dict[str, Callable[..., pd.DataFrame]] = {
 }
 
 
-def crawl(source: str, return_format: str = "csv", **kwargs):
+def crawl(
+    source: Literal["lrytas"],
+    return_format: Literal["csv", "df", "records"] = "csv",
+    **kwargs,
+) -> pd.DataFrame | str | list[dict[str, Any]]:
     """
     Crawls data from a specified source and returns it in the specified format.
 
@@ -45,10 +50,9 @@ def crawl(source: str, return_format: str = "csv", **kwargs):
     if return_format == "df":
         return data
     elif return_format == "csv":
-        return data.to_csv()
-
-
-# Example usage
-if __name__ == "__main__":
-    file_name = crawl("lrytas", date_from="2021-01-01", query="vakcinavimas")
-    print(f"Data saved to {file_name}")
+        with StringIO() as out:
+            data.to_csv(out)
+            content = out.getvalue()
+        return content
+    elif return_format == "records":
+        data.to_dict(orient="records")
