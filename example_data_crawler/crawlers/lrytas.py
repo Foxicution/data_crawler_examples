@@ -1,12 +1,12 @@
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from itertools import chain
+from typing import Any
 
 import pandas as pd
 from httpx import get
 
 
-def _get_raw_data(page: int, date_from: str | None, query: str | None) -> dict:
+def _get_raw_data(page: int, date_from: str | None, query: str | None) -> dict | None:
     headers = {
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/116.0",
         "Accept": "application/json, text/plain, */*",
@@ -75,9 +75,9 @@ def crawl_lrytas(
         return pd.DataFrame()
 
     total_pages = first_page.get("totalPages", 0)
-    print(total_pages)
+    print(f"Total pages: {total_pages}")
 
-    data = [first_page.get("articles")]
+    data: list[dict[str, Any]] = first_page.get("articles", [])
 
     with ThreadPoolExecutor(10) as pool:
         futures = {
@@ -93,15 +93,8 @@ def crawl_lrytas(
             try:
                 page_data = future.result()
                 if page_data:
-                    data.append(page_data.get("articles"))
+                    data.extend(page_data.get("articles", []))
             except Exception as e:
                 print(f"Failed to get data for page {futures[future]}: {e}")
 
-    return pd.DataFrame(list(chain.from_iterable(filter(None, data))))
-
-
-if __name__ == "__main__":
-    dfrom = "2021-01-01"  # Example date
-    q_text = "vakcinavimas"  # Example query
-    data = crawl_lrytas(dfrom, q_text)
-    data.to_csv("lrytas_data.csv")
+    return pd.DataFrame(data)
