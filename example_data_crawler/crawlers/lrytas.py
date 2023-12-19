@@ -51,6 +51,7 @@ def _get_raw_data(
             time.sleep(min(base_delay * (2**retries), max_base_delay))
             retries += 1
         except HTTPStatusError as e:
+            print(f"Attempt {retries + 1} failed: {e}")
             if e.response.status_code == 429:  # Check for 429 specifically
                 retry_after = e.response.headers.get("Retry-After")
                 if retry_after:
@@ -59,7 +60,10 @@ def _get_raw_data(
                         print(f"Retry after {retry_after}")
                         time.sleep(retry_after)
                     except ValueError:
-                        pass  # If the Retry-After header is not a valid number
+                        time.sleep(
+                            min(base_delay * (2**retries), max_base_delay)
+                        )  # If the Retry-After header is not a valid number
+            retries += 1
 
     print(f"Failed to get raw data after {max_retries} retries")
     return None
