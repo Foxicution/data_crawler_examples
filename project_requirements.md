@@ -24,6 +24,9 @@ If you have any questions, please post a message on Teams. You will have four in
   - Different data presentation formats: CSV string and a dictionary of records. For non-CSV data (images, audio), use dict records.
   - Include sample crawled data.
 
+## Extra
+- If you do something extra with the data, or have some creative solution, I will give extra points.
+
 ### Example Code Snippets
 
 1. **Calling main function**:
