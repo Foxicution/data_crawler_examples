@@ -11,7 +11,7 @@ If you have any questions, please post a message on Teams. You will have four in
 - Aim for ~80% code coverage with well-designed test cases.
 - The project must be pip-installable and available on PyPI.
 - The project must be publicly available on GitHub with a clean Git history.
-- Project structure should include: module directory, tests directory, README.md (with user guide or documentation), .gitignore, requirements.txt/pyproject.toml (specifying dependencies and Python version compatibility - ideally 3.10+).
+- Project structure should include: module directory, tests directory, README.md (with user guide or documentation), .gitignore, requirements.txt/pyproject.toml (specifying dependencies and Python version compatibility - ideally 3.9+).
 - Organize the module directory efficiently. Avoid large files or unusual naming conventions.
 - Maintain clean code. Exposed functions must have docstrings, clear naming, and type annotations.
 
